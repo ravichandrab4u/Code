@@ -2,12 +2,15 @@ package com.test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime; 
+
+import com.test.modal.Transaction;
+import com.test.utils.DateUtil;
+import com.test.utils.TransactionType; 
 
 public class Account {
 	
@@ -15,9 +18,6 @@ public class Account {
 		// Input Transactions data file location
 		String fileName = "C:\\Users\\lenovo\\Desktop\\TestData.csv";
 
-		// Date Format
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-		
 		List<Transaction> transcations = null;
 		try (Stream<String> lines = Files.lines(Paths.get(fileName))) {
 			transcations = lines.skip(1).map(Transaction::new).collect(Collectors.toList());
@@ -39,8 +39,8 @@ public class Account {
 	    String to = scanner.nextLine();
 	    scanner.close();
 		
-		LocalDateTime fromDate =  LocalDateTime.parse(from.trim(), formatter);
-		LocalDateTime toDate =  LocalDateTime.parse(to.trim(), formatter);
+		LocalDateTime fromDate = DateUtil.getLocalDateTimeFromString(from);
+		LocalDateTime toDate =  DateUtil.getLocalDateTimeFromString(to);
 
 		// Get Reversal Transaction Ids
 		List<String> reversalTranscations = transcations.stream()

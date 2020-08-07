@@ -1,7 +1,9 @@
-package com.test;
+package com.test.modal;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import com.test.utils.DateUtil;
+import com.test.utils.TransactionType;
 
 public class Transaction {
 	private String transcationId;
@@ -13,16 +15,14 @@ public class Transaction {
 	private String relatedTranscation;
 
 	public Transaction() {
-
 	}
 
 	public Transaction(String transactionLine) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		String[] transaction = transactionLine.split(",");
 		this.transcationId = transaction[0].trim();
 		this.fromAccountId = transaction[1].trim();
 		this.toAccountId = transaction[2].trim();
-		this.createdAt = LocalDateTime.parse(transaction[3].trim(), formatter);
+		this.createdAt = DateUtil.getLocalDateTimeFromString(transaction[3]);
 		this.amount = Double.valueOf(transaction[4]);
 		this.transcationType = TransactionType.valueOf(transaction[5].trim());
 		if (transaction.length > 6) {
