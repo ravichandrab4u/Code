@@ -48,7 +48,7 @@ public class Account {
 				.collect(Collectors.toList());
 
 		// Filter Input Transaction, remove reversal transaction and filter dates based on input from date and to date
-		List<Transaction> updateTranscations1 = transcations.stream()
+		List<Transaction> filteredTranscations = transcations.stream()
 				.filter(t -> t.getTranscationType() == TransactionType.PAYMENT
 						&& t.getFromAccountId().equals(transcationid)
 						&& !reversalTranscations.contains(t.getTranscationId())
@@ -57,7 +57,7 @@ public class Account {
 		
 		// Iterate and add/subtract amount based on from or to 
 		Double finalAmount = 0.0;
-		for (Transaction t : updateTranscations1) {
+		for (Transaction t : filteredTranscations) {
 			if (t.getFromAccountId().equals(transcationid)) {
 				finalAmount -= t.getAmount();
 			} else if(t.getToAccountId().equals(transcationid)) {
@@ -67,7 +67,7 @@ public class Account {
 		
 		// Print output
 		System.out.println("Relative balance for the period is: " + finalAmount);
-		System.out.println("Number of transactions included is: " + updateTranscations1.size());
+		System.out.println("Number of transactions included is: " + filteredTranscations.size());
 		
 	}
 		
